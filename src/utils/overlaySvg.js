@@ -17,6 +17,7 @@ export function buildOverlaySvg({
                                     currency,
                                     siteText,
                                     pricePrefix,
+                                    embeddedFontCss = "",
                                 }) {
     const fromLabel = toTurkishUppercase(localizeCityName(fromCity));
     const toLabel = toTurkishUppercase(localizeCityName(toCity));
@@ -41,6 +42,32 @@ export function buildOverlaySvg({
 
     return `
   <svg width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+    <style>
+      <![CDATA[
+        ${embeddedFontCss}
+
+        .site-text {
+          font-family: 'RenderSans', sans-serif;
+          font-weight: 700;
+        }
+
+        .route-text {
+          font-family: 'RenderSansBold', sans-serif;
+          font-weight: 700;
+        }
+
+        .price-text {
+          font-family: 'RenderSansBold', sans-serif;
+          font-weight: 700;
+        }
+
+        .meta-text {
+          font-family: 'RenderSans', sans-serif;
+          font-weight: 700;
+        }
+      ]]>
+    </style>
+
     <defs>
       <linearGradient id="bandGradient" x1="0" y1="0" x2="1" y2="0">
         <stop offset="0%" stop-color="rgba(124,52,76,0.56)" />
@@ -61,13 +88,12 @@ export function buildOverlaySvg({
     <rect x="0" y="0" width="${WIDTH}" height="90" fill="url(#topFade)" />
 
     <text
+      class="site-text"
       x="${WIDTH / 2}"
       y="34"
       text-anchor="middle"
       fill="#ffffff"
       font-size="18"
-      font-family="Arial, Helvetica, sans-serif"
-      font-weight="800"
       letter-spacing="1"
       filter="url(#textShadow)"
     >
@@ -91,12 +117,11 @@ export function buildOverlaySvg({
     />
 
     <text
+      class="route-text"
       x="28"
       y="${bandY + 54}"
       fill="#ffffff"
       font-size="${routeFontSize}"
-      font-family="Arial Black, Arial, Helvetica, sans-serif"
-      font-weight="900"
       letter-spacing="0.5"
       filter="url(#textShadow)"
     >
@@ -104,12 +129,11 @@ export function buildOverlaySvg({
     </text>
 
     <text
+      class="route-text"
       x="28"
       y="${bandY + 124}"
       fill="#ffffff"
       font-size="${routeFontSize}"
-      font-family="Arial Black, Arial, Helvetica, sans-serif"
-      font-weight="900"
       letter-spacing="0.5"
       filter="url(#textShadow)"
     >
@@ -117,13 +141,12 @@ export function buildOverlaySvg({
     </text>
 
     <text
+      class="site-text"
       x="${WIDTH / 2}"
       y="${HEIGHT - 14}"
       text-anchor="middle"
       fill="#ffffff"
       font-size="15"
-      font-family="Arial, Helvetica, sans-serif"
-      font-weight="800"
       letter-spacing="1"
       filter="url(#textShadow)"
     >
@@ -131,12 +154,11 @@ export function buildOverlaySvg({
     </text>
 
     <text
+      class="price-text"
       x="${priceRightX}"
       y="${bandY + 112}"
       text-anchor="end"
       fill="#ffffff"
-      font-family="Arial Black, Arial, Helvetica, sans-serif"
-      font-weight="900"
       filter="url(#textShadow)"
     >
       <tspan font-size="${priceFontSize}">${safePrice}</tspan>
@@ -144,13 +166,12 @@ export function buildOverlaySvg({
     </text>
 
     <text
+      class="meta-text"
       x="${priceRightX}"
       y="${bandY + 146}"
       text-anchor="end"
       fill="#ffffff"
       font-size="15"
-      font-family="Arial, Helvetica, sans-serif"
-      font-weight="700"
       letter-spacing="0.8"
       filter="url(#textShadow)"
     >

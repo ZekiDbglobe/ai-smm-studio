@@ -7,6 +7,8 @@ import { getCurrencySymbol } from "../utils/city.js";
 
 const logoPath = path.join(process.cwd(), "assets", "logo.png");
 const heartSvgPath = path.join(process.cwd(), "assets", "kalp-white.svg");
+const regularFontPath = path.join(process.cwd(), "assets", "NotoSans-Regular.ttf");
+const boldFontPath = path.join(process.cwd(), "assets", "NotoSans-Bold.ttf");
 
 async function getLogoBuffer() {
     await fs.access(logoPath);
@@ -30,6 +32,29 @@ async function getHeartBuffer() {
         })
         .png()
         .toBuffer();
+}
+
+async function getEmbeddedFontCss() {
+    const [regularFont, boldFont] = await Promise.all([
+        fs.readFile(regularFontPath),
+        fs.readFile(boldFontPath),
+    ]);
+
+    return `
+    @font-face {
+      font-family: 'RenderSans';
+      src: url(data:font/ttf;base64,${regularFont.toString("base64")}) format('truetype');
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'RenderSansBold';
+      src: url(data:font/ttf;base64,${boldFont.toString("base64")}) format('truetype');
+      font-weight: 700;
+      font-style: normal;
+    }
+  `;
 }
 
 async function downloadImage(url) {
@@ -65,8 +90,11 @@ export async function renderInstagramCard({
         .jpeg({ quality: 95 })
         .toBuffer();
 
-    const logoBuffer = await getLogoBuffer();
-    const heartBuffer = await getHeartBuffer();
+    const [logoBuffer, heartBuffer, embeddedFontCss] = await Promise.all([
+        getLogoBuffer(),
+        getHeartBuffer(),
+        getEmbeddedFontCss(),
+    ]);
 
     const overlaySvg = buildOverlaySvg({
         fromCity,
@@ -75,6 +103,7 @@ export async function renderInstagramCard({
         currency: getCurrencySymbol(currency),
         siteText,
         pricePrefix,
+        embeddedFontCss,
     });
 
     const heartWidth = 190;
