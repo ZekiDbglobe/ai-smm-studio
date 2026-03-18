@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trios Content Studio</title>
+  <link rel="stylesheet" href="/studio/styles.css">
+</head>
+<body>
+<div class="page-shell">
+  <header class="surface hero">
+    <div class="hero-copy">
+      <div class="brand-row">
+        <div class="brand-badge">
+          <img class="brand-mark" src="/studio/trios-logo.svg" alt="Trios logo">
+        </div>
+
+        <div class="brand-meta">
+          <p class="eyebrow">Trios Content Studio</p>
+          <h1>Post üret, kontrol et ve tek panelden yayınla.</h1>
+          <p class="lede">
+            Marketing akışı için sade ama düzgün bir kontrol paneli:
+            taslak üret, görseli ve caption’ı incele, not bırak veya direkt Instagram’a gönder.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-tools">
+      <div class="topbar-actions">
+        <button id="themeToggleButton" class="ghost">Koyu moda geç</button>
+        <button id="refreshButton" class="ghost">Listeyi Yenile</button>
+        <button id="generateButton" class="primary">Yeni Taslak Üret</button>
+        <button id="logoutButton" class="ghost danger">Çıkış Yap</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="stats-grid">
+    <article class="surface stat-card">
+      <span>Toplam içerik</span>
+      <strong id="totalCount">0</strong>
+    </article>
+
+    <article class="surface stat-card">
+      <span>İnceleme bekleyen</span>
+      <strong id="reviewCount">0</strong>
+    </article>
+
+    <article class="surface stat-card">
+      <span>Yayınlanan</span>
+      <strong id="postedCount">0</strong>
+    </article>
+  </section>
+
+  <div class="workspace">
+    <section class="surface panel list-panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">İçerikler</p>
+          <h2>Hazır postlar</h2>
+        </div>
+        <p id="listStatusText" class="micro">Yönetici anahtarı bekleniyor</p>
+      </div>
+
+      <div class="filters" id="filters">
+        <button data-status="all" class="filter active">Tümü</button>
+        <button data-status="review" class="filter">İncelemede</button>
+        <button data-status="posted" class="filter">Yayında</button>
+        <button data-status="generation_failed" class="filter">Üretim Hatası</button>
+        <button data-status="failed" class="filter">Yayın Hatası</button>
+      </div>
+
+      <div id="postList" class="post-list"></div>
+    </section>
+
+    <section class="surface panel detail-panel">
+      <div class="panel-head detail-head">
+        <div>
+          <p class="eyebrow">Seçili post</p>
+          <h2 id="detailTitle">Bir post seç</h2>
+        </div>
+
+        <div class="platform-pills">
+          <span class="pill active">Instagram</span>
+          <span class="pill soon">LinkedIn yakında</span>
+          <span class="pill soon">TikTok yakında</span>
+        </div>
+      </div>
+
+      <p id="detailState" class="detail-state">
+        Soldaki listeden bir post seç. Görsel, caption ve revizyon geçmişi burada görünecek.
+      </p>
+
+      <div class="detail-layout">
+        <div class="preview-column">
+          <div class="preview-frame">
+            <img id="previewImage" class="hidden" alt="Post preview">
+            <div id="imagePlaceholder" class="image-placeholder"></div>
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-card">
+              <span class="meta-label">Durum</span>
+              <strong id="detailStatus">-</strong>
+            </div>
+
+            <div class="meta-card">
+              <span class="meta-label">Revizyon</span>
+              <strong id="detailRevision">-</strong>
+            </div>
+
+            <div class="meta-card">
+              <span class="meta-label">Fiyat</span>
+              <strong id="detailPrice">-</strong>
+            </div>
+
+            <div class="meta-card">
+              <span class="meta-label">Tarih</span>
+              <strong id="detailDate">-</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-column">
+          <label class="field">
+            <span>Caption</span>
+            <textarea id="captionBox" rows="8" readonly></textarea>
+          </label>
+
+          <label class="field">
+            <span>Düzenleme notu</span>
+            <textarea
+                    id="instructionsBox"
+                    rows="5"
+                    placeholder="Örn: Daha premium bir dil kullan, fiyat vurgusunu artır, CTA’yı daha güçlü yap."
+            ></textarea>
+          </label>
+
+          <div class="button-row">
+            <button id="regenerateButton" class="ghost">Regenerate</button>
+            <button id="publishButton" class="primary">Onayla ve Paylaş</button>
+          </div>
+
+          <div id="errorBox" class="error-box hidden"></div>
+
+          <div class="revision-block">
+            <div class="panel-head compact">
+              <div>
+                <p class="eyebrow">Geçmiş</p>
+                <h3>Revizyonlar</h3>
+              </div>
+            </div>
+
+            <div id="revisionList" class="revision-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden" aria-live="polite"></div>
+
+<script type="module" src="/studio/app.js"></script>
+</body>
+</html>

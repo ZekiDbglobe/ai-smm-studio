@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Trios Studio Login</title>
+    <style>
+        :root {
+            --bg: #081120;
+            --bg2: #101a2f;
+            --card: rgba(15, 23, 42, 0.88);
+            --border: rgba(148, 163, 184, 0.14);
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --primary: #60a5fa;
+            --primary2: #3b82f6;
+            --danger: #fb7185;
+            --shadow: 0 30px 80px rgba(2, 8, 23, 0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Inter, system-ui, sans-serif;
+            color: var(--text);
+            background:
+                    radial-gradient(circle at top left, rgba(96, 165, 250, 0.16), transparent 30%),
+                    linear-gradient(180deg, var(--bg), var(--bg2));
+            display: grid;
+            place-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: min(440px, 100%);
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            padding: 28px;
+            backdrop-filter: blur(16px);
+        }
+
+        .eyebrow {
+            margin: 0 0 10px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            font-size: .74rem;
+            font-weight: 700;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 2.7rem);
+            line-height: 1;
+            letter-spacing: -.04em;
+        }
+
+        .lede {
+            margin: 14px 0 24px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        label {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 16px;
+            color: var(--muted);
+            font-size: .92rem;
+        }
+
+        input {
+            width: 100%;
+            height: 52px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,.04);
+            color: var(--text);
+            padding: 0 16px;
+            font: inherit;
+        }
+
+        button {
+            width: 100%;
+            height: 52px;
+            border: 0;
+            border-radius: 16px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 800;
+            color: #eff6ff;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+        }
+
+        .error {
+            min-height: 22px;
+            margin-top: 14px;
+            color: var(--danger);
+            font-size: .92rem;
+        }
+    </style>
+</head>
+<body>
+<form id="loginForm" class="card">
+    <p class="eyebrow">Trios Content Studio</p>
+    <h1>Admin girişi</h1>
+    <p class="lede">Panele erişmek için yönetici kodunu gir.</p>
+
+    <label for="secret">
+        Yönetici kodu
+        <input id="secret" type="password" autocomplete="current-password" placeholder="ADMIN_SECRET">
+    </label>
+
+    <button id="submitButton" type="submit">Giriş yap</button>
+    <div id="errorText" class="error"></div>
+</form>
+
+<script>
+    const form = document.getElementById("loginForm");
+    const secretInput = document.getElementById("secret");
+    const submitButton = document.getElementById("submitButton");
+    const errorText = document.getElementById("errorText");
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        errorText.textContent = "";
+        submitButton.disabled = true;
+
+        try {
+            const response = await fetch("/api/studio/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "same-origin",
+                body: JSON.stringify({
+                    secret: secretInput.value.trim(),
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || data.success === false) {
+                throw new Error(data.error || "Giriş başarısız.");
+            }
+
+            window.location.href = "/studio";
+        } catch (error) {
+            errorText.textContent = error.message || "Giriş başarısız.";
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>

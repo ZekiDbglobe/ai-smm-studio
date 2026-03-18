@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/supabase/migrations/20260316130000_instagram_automation.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/supabase/migrations/20260318120000_content_review_workflow.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/supabase/sql/schedule_instagram_automation.sql" dialect="GenericSQL" />
+  </component>
+</project>

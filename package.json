@@ -1,0 +1,18 @@
+{
+  "name": "instagram-renderer",
+  "version": "1.0.0",
+  "description": "Render Instagram travel promo images and optionally publish them",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.56.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "sharp": "^0.33.5"
+  }
+}
